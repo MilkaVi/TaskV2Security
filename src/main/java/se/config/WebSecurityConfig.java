@@ -1,8 +1,11 @@
 package se.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.GlobalAuthenticationConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,10 +20,9 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
+@ComponentScan("se")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private DataSource dataSource;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -57,18 +59,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        return new InMemoryUserDetailsManager(user);
 //    }
 
-
+//{noop}
 
     @Configuration
     protected static class AuthenticationConfiguration extends
             GlobalAuthenticationConfigurerAdapter {
 
+
+        public AnnotationConfigApplicationContext a = new AnnotationConfigApplicationContext(BDconfig.class);
+        DataSource dataSource = a.getBean("dataSource", DataSource.class);
+
         @Override
         public void init(AuthenticationManagerBuilder auth) throws Exception {
-            auth
-                    .inMemoryAuthentication()
-                    .withUser("user").password("{noop}password").roles("USER");
+            auth.jdbcAuthentication()
+                    .dataSource(dataSource)
+                    .usersByUsernameQuery(
+                            "select login, password, 'true' from usr " +
+                                    "where login=?")
+                    .authoritiesByUsernameQuery(
+                            "select login, role from usr " +
+                                    "where login=?");
         }
-
     }
 }

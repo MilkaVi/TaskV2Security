@@ -15,7 +15,7 @@ public class BDconfig {
         return new JdbcTemplate(getDataSource());
     }
 
-    @Bean
+    @Bean("dataSource")
     public DataSource getDataSource() {
         DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
         driverManagerDataSource.setUrl("jdbc:postgresql://localhost:5432/TEST_BD");
