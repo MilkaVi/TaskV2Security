@@ -34,31 +34,33 @@ public class UserController {
         int id = users.getUserByUsername(getCurrentUsername()).getId();
         model.addAttribute("user_id", id);
         model.addAttribute("files", fileRepository.getAllById(id));
-        return "hello";
+        return "user/order";
     }
 
-    @GetMapping("/user/add-new-order/{users_id}")
-    public String addNewOrderPage(@PathVariable("users_id") Integer user_id, Model model) {//@PathVariable("id") Integer id,
+    @GetMapping("/user/add-new-order")
+    public String addNewOrderPage(Model model) {//@PathVariable("id") Integer id,
                 model.addAttribute("file", new File());
 
+        System.out.println("addGET-user " +users.getUserByUsername(getCurrentUsername()));
         return "user/addNewOrder";
     }
 
-    @PostMapping("/user/add-new-order/{users_id}")
+    @PostMapping("/user/add-new-order")
     public String addNewOrder(@Valid File file, Errors errors,
-                              @RequestParam(value = "users_id") int user_id, Model model) {
+                              Model model) {
+        System.out.println("addpost-user " +users.getUserByUsername(getCurrentUsername()));
         if(errors.hasErrors()){
-            model.addAttribute("users_id", user_id);
             return "user/addNewOrder";
         }
+
+        int user_id = users.getUserByUsername(getCurrentUsername()).getId();
         file.setFile_user(user_id);
 
         fileRepository.save(file);
 
         model.addAttribute("files", fileRepository.getAllById(user_id));
-        model.addAttribute("user_id", user_id);
 
-        return "user/order"; // команда, которая сделает перенаправление на другой урл
+        return "user/order";
     }
 
 

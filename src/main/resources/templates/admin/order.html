@@ -45,7 +45,7 @@
     </tr>
     </thead>
     <tr th:each="file : ${files}">
-        <td th:utext="${users.get(file.getFile_user()).getLogin()}"></td>
+        <td th:utext="${users.get(file.getFile_user()-1).getLogin()}"></td>
         <td th:utext="${file.getUser_id()}"></td>
         <td th:utext="${file.getName()}"></td>
         <td th:utext="${file.getDate()}"></td>
