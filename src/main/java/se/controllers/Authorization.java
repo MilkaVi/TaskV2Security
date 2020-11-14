@@ -18,13 +18,19 @@ import javax.validation.Valid;
 public class Authorization {
     static FileService fileRepository = new FileServiceImpl();
     static UserRepository users = new UserRepositoryImpl();
+//
+//    @GetMapping()
+//    public String index(Model model) {
+//
+//        model.addAttribute("user", new User());
+//        return "login";
+//    }
 
-    @GetMapping()
-    public String index(Model model) {
-
-        model.addAttribute("user", new User());
+    @GetMapping("/login")
+    public String login() {
         return "login";
     }
+
 
 //    @PostMapping("/login")
 //    public String signIn(@Valid User user, Errors errors, Model model) {
@@ -78,7 +84,6 @@ public class Authorization {
         }
 
         model.addAttribute("files", fileRepository.getAllById(users.getId(userFromDB)));
-        model.addAttribute("user_id", users.getId(userFromDB));
         return "user/order";
     }
 

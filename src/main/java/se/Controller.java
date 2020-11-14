@@ -29,10 +29,10 @@ public class Controller {
         System.out.println("hi " +users.getUserByUsername(getCurrentUsername()));
         return "hello";
     }
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
+//    @GetMapping("/login")
+//    public String login() {
+//        return "login";
+//    }
 
 
     @GetMapping("/admin/greeting")

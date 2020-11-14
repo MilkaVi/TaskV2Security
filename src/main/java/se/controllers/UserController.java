@@ -32,7 +32,6 @@ public class UserController {
     public String getOrderPage(Model model) {
         System.out.println("order-user " +users.getUserByUsername(getCurrentUsername()));
         int id = users.getUserByUsername(getCurrentUsername()).getId();
-        model.addAttribute("user_id", id);
         model.addAttribute("files", fileRepository.getAllById(id));
         return "user/order";
     }
@@ -87,7 +86,6 @@ public class UserController {
         // id - file
         fileRepository.update(id, file.getUser_id(), file.getName(), file.getDate());
         model.addAttribute("files", fileRepository.getAllById(fileRepository.getById(id).getFile_user()));
-        model.addAttribute("user_id", fileRepository.getById(id).getFile_user());
         return "user/order";
     }
 
@@ -107,12 +105,13 @@ public class UserController {
 
 
     @GetMapping("/user/select")
-    public String getOrderFilter(@RequestParam(value = "file_id", required = false, defaultValue = "0") Integer file_id,
-                                 @RequestParam(value = "user_id", required = false) Integer user_id,
+    public String getOrderFilter(@RequestParam(value = "file_id", required = false, defaultValue = "0")
+                                             Integer file_id,
                                  @RequestParam(value = "name", required = false) String name,
                                  @RequestParam(value = "date", required = false) String date, Model model) {
 
-        // id - file
+       
+        int user_id = users.getUserByUsername(getCurrentUsername()).getId();
         System.out.println(file_id + "=filed_id  " +user_id + "user_id"  );
         model.addAttribute("files", fileRepository.select(user_id, file_id, name, date));
         model.addAttribute("user_id", user_id);
