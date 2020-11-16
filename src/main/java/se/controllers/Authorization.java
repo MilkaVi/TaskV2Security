@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,51 +42,32 @@ public class Authorization {
                 model.addAttribute("files", fileRepository.getAllById(id));
                 return "user/order";
             }
+    }
 
+    @GetMapping("/login_failure_handler")
+    public String loginFailureHandler() {
 
+        return "login";
     }
 
     @PostMapping("/login_failure_handler")
-    public String loginFailureHandler() {
+    public String postloginFailureHandler(Model model) {
         System.out.println("Login failure handler....");
-
+        model.addAttribute("error", "bad login and password");
         return "login";
     }
 
 
 
+    @GetMapping("/logout_success")
+    public String logout_success() {
+        return "logout_success";
+    }
 
     @GetMapping("/login")
     public String login() {
         return "login";
     }
-
-
-//    @PostMapping("/login")
-//    public String signIn(@Valid User user, Errors errors, Model model) {
-//        if(errors.hasErrors()){
-//            return "login";
-//        }
-//
-//        if (users.getByLogPass(user.getLogin().trim(), user.getPassword().trim()) == null) {
-//            return "registration";
-//        } else {
-//            int id = users.getId(users.getByLogPass(user.getLogin(), user.getPassword()));// id - user
-//
-//            if (users.getByLogPass(user.getLogin(), user.getPassword()).getRole().equals("admin")) {
-//
-//                model.addAttribute("files", fileRepository.getAll());
-//                model.addAttribute("users", users.getAll());
-//                model.addAttribute("user_id", id);
-//                return "admin/order";
-//            } else {
-//                model.addAttribute("user", new User());
-//                model.addAttribute("user_id", id);
-//                model.addAttribute("files", fileRepository.getAllById(id));
-//                return "user/order";
-//            }
-//        }
-//    }
 
 
     @GetMapping("/registration")
@@ -97,9 +79,15 @@ public class Authorization {
 
 
     @PostMapping("/registration")
-    public String addUser(@Valid User user, Errors errors,
+    public String addUser(@Valid User user, BindingResult bindingResult,
                           Model model) {
-        if(errors.hasErrors()){
+        if(users.getUserByUsername(user.getLogin())!=null){
+            model.addAttribute("error", "username is already exist");
+            return "registration";
+        }
+
+        if (bindingResult.hasErrors()){
+            System.out.println("+++++++++++++");
             return "registration";
         }
 
@@ -108,7 +96,7 @@ public class Authorization {
             userFromDB = new User();
             userFromDB.setLogin(user.getLogin());
             userFromDB.setPassword(user.getPassword());
-            userFromDB.setRole("user");
+            userFromDB.setRole("ROLE_USER");
             users.save(userFromDB);
         }
 

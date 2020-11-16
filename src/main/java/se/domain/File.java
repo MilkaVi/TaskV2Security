@@ -1,14 +1,22 @@
 
 package se.domain;
 
+import javax.validation.constraints.*;
+
 public class File {
     private Integer id;
 
-
+    @Digits(integer=3, fraction=0, message = "Не более 3-х знаков")
+    @NotNull
     private Integer user_id;
 
+
+    @NotBlank
+    @Size(min=1,message = "min 1 characters")
     private String name;
 
+    @NotBlank
+    @Size(min=1,message = "min 1 characters")
     private String date;
     private Integer file_user;
 

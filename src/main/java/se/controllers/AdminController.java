@@ -5,10 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import se.domain.File;
 import se.repository.UserRepository;
 import se.repository.UserRepositoryImpl;
@@ -63,8 +60,7 @@ public class AdminController {
         return "admin/order";
     }
 
-
-    @GetMapping("/admin/delete/{id}")
+    @DeleteMapping("/admin/delete/{id}")
     public String deleteItem(@PathVariable Integer id, Model model) {
         //id - file
 

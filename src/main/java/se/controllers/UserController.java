@@ -5,10 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import se.domain.File;
 import se.repository.UserRepository;
 import se.repository.UserRepositoryImpl;
@@ -66,6 +63,7 @@ public class UserController {
     @GetMapping("/user/update/{files_id}")
     public String updateItemPage(@PathVariable("files_id") Integer id, //@RequestParam("user_id") int user_id,
                                  Model model) {
+        System.out.println("++++++++++++1");
         // id - file
         model.addAttribute("file", new File());
         model.addAttribute("file_id", id);
@@ -78,6 +76,7 @@ public class UserController {
                              @Valid File file,
                              Errors errors,
                              Model model) {
+        System.out.println("++++++++++++2");
 
         if(errors.hasErrors()){
             model.addAttribute("files_id", id);
@@ -91,14 +90,15 @@ public class UserController {
 
 
     @GetMapping("/user/delete/{id}")
-    public String deleteItem(@PathVariable Integer id, Model model) {
+    public String deleteItem(
+            @PathVariable Integer id,
+            Model model) {
         //id - file
         int oldId = fileRepository.getById(id).getFile_user();
 
         fileRepository.delete(id);
 
         model.addAttribute("files", fileRepository.getAllById(oldId));
-        model.addAttribute("user_id", oldId);
 
         return "user/order";
     }
@@ -114,7 +114,6 @@ public class UserController {
         int user_id = users.getUserByUsername(getCurrentUsername()).getId();
         System.out.println(file_id + "=filed_id  " +user_id + "user_id"  );
         model.addAttribute("files", fileRepository.select(user_id, file_id, name, date));
-        model.addAttribute("user_id", user_id);
         return "user/order";
     }
 

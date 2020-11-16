@@ -1,12 +1,21 @@
 package se.domain;
 
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class User {
 
     private Integer id = 0;
 
+    @NotBlank
+    @Size(min=1,message = "min 1 characters")
     private String login;
 
+    @NotBlank
+    @Size(min=1,message = "min 1 characters")
     private String password;
     private String role;
 

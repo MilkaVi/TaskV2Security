@@ -14,18 +14,32 @@
 </head>
 <body class="text-center" style="background-color: #f5f5f5;">
 
+<div th:if="${param.error}">
+    Invalid username and password.
+</div>
+<div th:if="${param.logout}">
+    You have been logged out.
+</div>
+
+
 <div style="display: flex; justify-content: center; margin-top: 5%; ">
     <form class="form-signin" action="/registration" th:object="${user}" method="post">
         <h1 class="h3 mb-3 font-weight-normal">Registration</h1>
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input th:field="*{login}" type="text" id="inputEmail" class="form-control"
+        <label  class="sr-only">Email address</label>
+        <input th:field="*{login}" type="text" name="username" class="form-control"
                placeholder="Email address" required autofocus>
         <span class="validationError"
               th:if="${#fields.hasErrors('login')}"
               th:errors="*{login}">
     </span>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input th:field="*{password}" type="password" id="inputPassword" class="form-control"
+
+        <div class="validationError">
+
+            <p th:text="${error}"></p>
+        </div>
+
+        <label  class="sr-only">Password</label>
+        <input th:field="*{password}" type="password" name="password" class="form-control"
                placeholder="Password" required>
         <span class="validationError"
               th:if="${#fields.hasErrors('password')}"
