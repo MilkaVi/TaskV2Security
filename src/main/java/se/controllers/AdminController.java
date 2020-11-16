@@ -33,43 +33,6 @@ public class AdminController {
         return "admin/order";
     }
 
-    @GetMapping("/admin/update/{files_id}")
-    public String updateItemPage(@PathVariable("files_id") Integer id, //@RequestParam("user_id") int user_id,
-                                 Model model) {
-        // id - file
-        model.addAttribute("file", new File());
-        model.addAttribute("files_id", id);
-        return "admin/update";
-    }
-
-    @PostMapping("/admin/update/{files_id}")
-    public String updateItem(@RequestParam("file_id") Integer id,
-                             @Valid File file,
-                             Errors errors,
-                             Model model) {
-
-        if(errors.hasErrors()){
-            model.addAttribute("files_id", id);
-            return "admin/update";
-        }
-
-        fileRepository.update(id, file.getUser_id(), file.getName(), file.getDate());
-        model.addAttribute("files", fileRepository.getAll());
-        model.addAttribute("users", users.getAll());
-        return "admin/order";
-    }
-
-    @DeleteMapping("/admin/delete/{id}")
-    public String deleteItem(@PathVariable Integer id, Model model) {
-        //id - file
-
-        fileRepository.delete(id);
-        model.addAttribute("files", fileRepository.getAll());
-        model.addAttribute("users", users.getAll());
-
-        return "admin/order";
-    }
-
     @GetMapping("/admin/select")
     public String getOrderFilter(@RequestParam(value = "file_id", required = false, defaultValue = "0") Integer file_id,
                                  @RequestParam(value = "name", required = false) String name,
@@ -93,9 +56,6 @@ public class AdminController {
 
         return "admin/order";
     }
-
-
-
 
     @GetMapping("/admin/file/{files_id}/edit")
     public String editA(@PathVariable("files_id") Integer id,

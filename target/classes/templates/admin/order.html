@@ -51,8 +51,6 @@
         <td th:utext="${file.getDate()}"></td>
 
         <td>
-<!--            <a class="btn btn-lg btn-primary btn-block" style=" border-radius: 10px;"-->
-<!--               th:href="@{/admin/delete/{id}(id=${file.getId()})}">Delete this file</a>-->
 
             <form th:method="DELETE" th:action="@{/admin/file/{id}(id=${file.getId()})}">
                 <input style="
@@ -63,8 +61,6 @@
         </td>
 
         <td>
-<!--            <a class="btn btn-lg btn-primary btn-block" style=" border-radius: 10px;"-->
-<!--               th:href="@{/admin/update/{files_id}(files_id=${file.getId()})}">Update this file</a>-->
 
             <form th:action="@{/admin/file/{files_id}/edit(files_id=${file.getId()})}">
                 <input style="

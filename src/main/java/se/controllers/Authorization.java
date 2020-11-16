@@ -57,8 +57,6 @@ public class Authorization {
         return "login";
     }
 
-
-
     @GetMapping("/logout_success")
     public String logout_success() {
         return "logout_success";
