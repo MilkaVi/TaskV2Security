@@ -33,14 +33,31 @@
         <td th:utext="${file.getDate()}"></td>
         <td>
 
-            <a style=" border-radius: 10px;"
-               class="btn btn-lg btn-primary btn-block"
-               th:href="@{/user/delete/{id}(id=${file.getId()})}">Delete
-                this file</a>
+            <!--            <a style=" border-radius: 10px;"-->
+            <!--               class="btn btn-lg btn-primary btn-block"-->
+            <!--               th:href="@{/user/file/{id}(id=${file.getId()})}" th:method="DELETE">Delete-->
+            <!--                this file</a>-->
+
+            <form th:method="DELETE" th:action="@{/user/file/{id}(id=${file.getId()})}">
+                <input style="
+
+                    border-radius: 10px; background-color: #007BFF;" type="submit" value="Delete"/>
+            </form>
+
         </td>
 
-        <td><a style=" border-radius: 10px;" class="btn btn-lg btn-primary btn-block"
-               th:href="@{/user/file/{files_id}/edit(files_id=${file.getId()})}">Update this file</a></td>
+        <td>
+<!--            <a style=" border-radius: 10px;" class="btn btn-lg btn-primary btn-block"-->
+<!--               th:href="@{/user/file/{files_id}/edit(files_id=${file.getId()})}">Update this file</a>-->
+
+            <form th:action="@{/user/file/{files_id}/edit(files_id=${file.getId()})}">
+                <input style="
+
+                    border-radius: 10px; background-color: #007BFF;" type="submit" value="Update"/>
+            </form>
+
+
+        </td>
 
     </tr>
 
@@ -49,6 +66,14 @@
     <a class="btn btn-lg btn-primary btn-block"
        th:href="@{/user/add-new-order}">Add new file</a>
 </div>
+
+
+
+
+
+
+
+
 
 <h1 class="h3 mb-3 font-weight-normal" align="center" style="margitn-top: 15px; align-items: center">file selection</h1>
 <div class="container" align="center">

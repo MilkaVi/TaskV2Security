@@ -27,7 +27,7 @@ public class UserController {
 
     @GetMapping("/user/order")
     public String getOrderPage(Model model) {
-        System.out.println("order-user " +users.getUserByUsername(getCurrentUsername()));
+
         int id = users.getUserByUsername(getCurrentUsername()).getId();
         model.addAttribute("files", fileRepository.getAllById(id));
         return "user/order";
@@ -89,19 +89,19 @@ public class UserController {
 //    }
 
 
-    @GetMapping("/user/delete/{id}")
-    public String deleteItem(
-            @PathVariable Integer id,
-            Model model) {
-        //id - file
-        int oldId = fileRepository.getById(id).getFile_user();
-
-        fileRepository.delete(id);
-
-        model.addAttribute("files", fileRepository.getAllById(oldId));
-
-        return "user/order";
-    }
+//    @GetMapping("/user/delete/{id}")
+//    public String deleteItem(
+//            @PathVariable Integer id,
+//            Model model) {
+//        //id - file
+//        int oldId = fileRepository.getById(id).getFile_user();
+//
+//        fileRepository.delete(id);
+//
+//        model.addAttribute("files", fileRepository.getAllById(oldId));
+//
+//        return "user/order";
+//    }
 
 
     @GetMapping("/user/select")
@@ -118,7 +118,7 @@ public class UserController {
     }
 
 
-    @GetMapping("user/file/{files_id}/edit")
+    @GetMapping("/user/file/{files_id}/edit")
     public String edit(@PathVariable("files_id") Integer id,
                                  Model model) {
 
@@ -128,7 +128,7 @@ public class UserController {
         return "user/update";
     }
 
-    @PatchMapping("user/file/{id}")
+    @PatchMapping("/user/file/{id}")
     public String update(@ModelAttribute("doc") @Valid File file,
                          Errors errors, @PathVariable("id") int id,
                              Model model) {
@@ -143,6 +143,16 @@ public class UserController {
         return "redirect:/user/order";
     }
 
+
+    @DeleteMapping("/user/file/{id}")
+    public String delete(@PathVariable("id") int id, Model model) {
+
+        int oldId = fileRepository.getById(id).getFile_user();
+        fileRepository.delete(id);
+        model.addAttribute("files", fileRepository.getAllById(oldId));
+
+        return "redirect:/user/order";
+    }
 
 
 
