@@ -44,7 +44,8 @@
 
     <div class="col-md-8 order-md-1" align="center">
 
-        <form class="needs-validation" action="/admin/update/{files_id}" th:object="${file}" method="POST">
+        <form class="needs-validation" action="/admin/update/{files_id}" th:action="@{/admin/file/{id}(id=${doc.getId()})}"
+              th:method="PATCH" th:object="${doc}" method="POST">
             <div align="center" class="row">
                 <div class="col-md-3 mb-3">
                     <label>Id</label>
@@ -85,7 +86,6 @@
             <hr class="mb-4">
             <button class="btn btn-primary btn-lg btn-block" type="submit">Update File</button>
             <!--                <input type="submit" value="Add new order">-->
-            <input type="hidden" name="file_id" th:value="${files_id}"></input>
 
         </form>
     </div>

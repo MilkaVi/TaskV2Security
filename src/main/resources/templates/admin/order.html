@@ -50,11 +50,24 @@
         <td th:utext="${file.getName()}"></td>
         <td th:utext="${file.getDate()}"></td>
 
-        <td><a class="btn btn-lg btn-primary btn-block" style=" border-radius: 10px;"
-               th:href="@{/admin/delete/{id}(id=${file.getId()})}">Delete this file</a></td>
+        <td>
 
-        <td><a class="btn btn-lg btn-primary btn-block" style=" border-radius: 10px;"
-               th:href="@{/admin/update/{files_id}(files_id=${file.getId()})}">Update this file</a></td>
+            <form th:method="DELETE" th:action="@{/admin/file/{id}(id=${file.getId()})}">
+                <input style="
+
+                    border-radius: 10px; background-color: #007BFF;" type="submit" value="Delete"/>
+            </form>
+
+        </td>
+
+        <td>
+
+            <form th:action="@{/admin/file/{files_id}/edit(files_id=${file.getId()})}">
+                <input style="
+
+                    border-radius: 10px; background-color: #007BFF;" type="submit" value="Update"/>
+            </form>
+        </td>
 
     </tr>
 

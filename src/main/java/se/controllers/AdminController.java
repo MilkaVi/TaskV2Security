@@ -28,7 +28,6 @@ public class AdminController {
     @GetMapping("/admin/order")
     public String getOrderPage(Model model) {
 
-        System.out.println("order-admin " +users.getUserByUsername(getCurrentUsername()));
         model.addAttribute("files", fileRepository.getAll());
         model.addAttribute("users", users.getAll());
         return "admin/order";
@@ -76,7 +75,7 @@ public class AdminController {
                                  @RequestParam(value = "name", required = false) String name,
                                  @RequestParam(value = "date", required = false) String date, Model model) {
 
-        System.out.println("file_id" + file_id + " name " + name + " date" + date);
+
 
         model.addAttribute("files", fileRepository.select(0, file_id, name, date));
 
@@ -94,6 +93,49 @@ public class AdminController {
 
         return "admin/order";
     }
+
+
+
+
+    @GetMapping("/admin/file/{files_id}/edit")
+    public String editA(@PathVariable("files_id") Integer id,
+                       Model model) {
+        model.addAttribute("doc", fileRepository.getById(id));
+        return "admin/update";
+    }
+
+    @PatchMapping("/admin/file/{id}")
+    public String updateA(@ModelAttribute("doc") @Valid File file,
+                         Errors errors, @PathVariable("id") int id,
+                         Model model) {
+
+        if(errors.hasErrors()){
+            model.addAttribute("file", fileRepository.getById(id));
+            return "admin/update";
+        }
+
+        fileRepository.update(id, file.getUser_id(), file.getName(), file.getDate());
+
+        model.addAttribute("files", fileRepository.getAll());
+
+        return "redirect:/admin/order";
+    }
+
+
+    @DeleteMapping("/admin/file/{id}")
+    public String deleteA(@PathVariable("id") int id, Model model) {
+
+        fileRepository.delete(id);
+        model.addAttribute("files", fileRepository.getAll());
+
+        return "redirect:/admin/order";
+    }
+
+
+
+
+
+
 
 
 }

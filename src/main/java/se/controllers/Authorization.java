@@ -53,7 +53,6 @@ public class Authorization {
 
     @PostMapping("/login_failure_handler")
     public String postloginFailureHandler(Model model) {
-        System.out.println("Login failure handler....");
         model.addAttribute("error", "bad login and password");
         return "login";
     }
@@ -88,7 +87,6 @@ public class Authorization {
         }
 
         if (bindingResult.hasErrors()){
-            System.out.println("+++++++++++++");
             return "registration";
         }
 

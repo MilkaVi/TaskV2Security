@@ -37,14 +37,12 @@ public class UserController {
     public String addNewOrderPage(Model model) {//@PathVariable("id") Integer id,
                 model.addAttribute("file", new File());
 
-        System.out.println("addGET-user " +users.getUserByUsername(getCurrentUsername()));
         return "user/addNewOrder";
     }
 
     @PostMapping("/user/add-new-order")
     public String addNewOrder(@Valid File file, Errors errors,
                               Model model) {
-        System.out.println("addpost-user " +users.getUserByUsername(getCurrentUsername()));
         if(errors.hasErrors()){
             return "user/addNewOrder";
         }
@@ -59,51 +57,6 @@ public class UserController {
         return "user/order";
     }
 
-
-//    @GetMapping("/user/update/{files_id}")
-//    public String updateItemPage(@PathVariable("files_id") Integer id, //@RequestParam("user_id") int user_id,
-//                                 Model model) {
-//        System.out.println("++++++++++++1");
-//        // id - file
-//        model.addAttribute("file", new File());
-//        model.addAttribute("file_id", id);
-//        return "user/update";
-//    }
-//
-//
-//    @PostMapping("/user/update/{files_id}")
-//    public String updateItem(@RequestParam("file_id") Integer id,
-//                             @Valid File file,
-//                             Errors errors,
-//                             Model model) {
-//        System.out.println("++++++++++++2");
-//
-//        if(errors.hasErrors()){
-//            model.addAttribute("files_id", id);
-//            return "user/update";
-//        }
-//        // id - file
-//        fileRepository.update(id, file.getUser_id(), file.getName(), file.getDate());
-//        model.addAttribute("files", fileRepository.getAllById(fileRepository.getById(id).getFile_user()));
-//        return "user/order";
-//    }
-
-
-//    @GetMapping("/user/delete/{id}")
-//    public String deleteItem(
-//            @PathVariable Integer id,
-//            Model model) {
-//        //id - file
-//        int oldId = fileRepository.getById(id).getFile_user();
-//
-//        fileRepository.delete(id);
-//
-//        model.addAttribute("files", fileRepository.getAllById(oldId));
-//
-//        return "user/order";
-//    }
-
-
     @GetMapping("/user/select")
     public String getOrderFilter(@RequestParam(value = "file_id", required = false, defaultValue = "0")
                                              Integer file_id,
@@ -112,7 +65,6 @@ public class UserController {
 
        
         int user_id = users.getUserByUsername(getCurrentUsername()).getId();
-        System.out.println(file_id + "=filed_id  " +user_id + "user_id"  );
         model.addAttribute("files", fileRepository.select(user_id, file_id, name, date));
         return "user/order";
     }
