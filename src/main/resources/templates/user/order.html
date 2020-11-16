@@ -40,7 +40,8 @@
         </td>
 
         <td><a style=" border-radius: 10px;" class="btn btn-lg btn-primary btn-block"
-               th:href="@{/user/update/{files_id}(files_id=${file.getId()})}">Update this file</a></td>
+               th:href="@{/user/file/{files_id}/edit(files_id=${file.getId()})}">Update this file</a></td>
+
     </tr>
 
 </table>

@@ -23,11 +23,13 @@
 
     <div class="col-md-8 order-md-1" align="center">
 
-        <form class="needs-validation" action="/user/update/{files_id}" th:object="${file}" method="POST">
+        <form class="needs-validation" th:method="PATCH" th:object="${doc}"
+              th:action="@{/user/file/{id}(id=${doc.getId()})}" >
             <div align="center" class="row">
                 <div class="col-md-3 mb-3">
                     <label>Id</label>
-                    <input type="text" class="form-control" th:field="*{user_id}" required>
+                    <input type="text" class="form-control" th:field="*{user_id}"
+                           th:value="${doc.getUser_id()}" required>
 
                     <span class="validationError"
                           th:if="${#fields.hasErrors('user_id')}"
@@ -37,8 +39,8 @@
                 </div>
 
                 <div class="col-md-3 mb-3">
-                    <label>Name</label>
-                    <input type="text" class="form-control" th:field="*{name}" required>
+                    <label >Name</label>
+                    <input type="text" class="form-control" th:field="*{name}" th:value="${doc.getName()}" required>
 
                     <span class="validationError"
                           th:if="${#fields.hasErrors('name')}"
@@ -48,7 +50,7 @@
 
                 <div class="col-md-3 mb-3">
                     <label>Date</label>
-                    <input type="text" class="form-control" th:field="*{date}" required>
+                    <input type="text" class="form-control" th:field="*{date}" th:value="${doc.getDate()}" required>
 
                     <span class="validationError"
                           th:if="${#fields.hasErrors('date')}"
@@ -63,8 +65,6 @@
             </div>
             <hr class="mb-4">
             <button class="btn btn-primary btn-lg btn-block" type="submit">Update File</button>
-            <!--                <input type="submit" value="Add new order">-->
-            <input type="hidden" name="file_id" th:value="${files_id}"></input>
 
         </form>
     </div>
