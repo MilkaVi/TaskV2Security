@@ -16,6 +16,7 @@ import javax.validation.Valid;
 
 
 @Controller
+@RequestMapping("/user")
 public class UserController {
     static FileService fileRepository = new FileServiceImpl();
     static UserRepository users = new UserRepositoryImpl();
@@ -25,7 +26,7 @@ public class UserController {
         return auth.getName();
     }
 
-    @GetMapping("/user/order")
+    @GetMapping("/order")
     public String getOrderPage(Model model) {
 
         int id = users.getUserByUsername(getCurrentUsername()).getId();
@@ -33,14 +34,14 @@ public class UserController {
         return "user/order";
     }
 
-    @GetMapping("/user/add-new-order")
+    @GetMapping("/add-new-order")
     public String addNewOrderPage(Model model) {//@PathVariable("id") Integer id,
                 model.addAttribute("file", new File());
 
         return "user/addNewOrder";
     }
 
-    @PostMapping("/user/add-new-order")
+    @PostMapping("/add-new-order")
     public String addNewOrder(@Valid File file, Errors errors,
                               Model model) {
         if(errors.hasErrors()){
@@ -57,7 +58,7 @@ public class UserController {
         return "user/order";
     }
 
-    @GetMapping("/user/select")
+    @GetMapping("/select")
     public String getOrderFilter(@RequestParam(value = "file_id", required = false, defaultValue = "0")
                                              Integer file_id,
                                  @RequestParam(value = "name", required = false) String name,
@@ -70,7 +71,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/user/file/{files_id}/edit")
+    @GetMapping("/file/{files_id}/edit")
     public String edit(@PathVariable("files_id") Integer id,
                                  Model model) {
 
@@ -80,7 +81,7 @@ public class UserController {
         return "user/update";
     }
 
-    @PatchMapping("/user/file/{id}")
+    @PatchMapping("/file/{id}")
     public String update(@ModelAttribute("doc") @Valid File file,
                          Errors errors, @PathVariable("id") int id,
                              Model model) {
@@ -96,7 +97,7 @@ public class UserController {
     }
 
 
-    @DeleteMapping("/user/file/{id}")
+    @DeleteMapping("/file/{id}")
     public String delete(@PathVariable("id") int id, Model model) {
 
         int oldId = fileRepository.getById(id).getFile_user();

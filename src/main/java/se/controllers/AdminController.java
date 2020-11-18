@@ -15,6 +15,7 @@ import se.service.FileServiceImpl;
 import javax.validation.Valid;
 
 @Controller
+@RequestMapping("/admin")
 public class AdminController {
 
     public String getCurrentUsername() {
@@ -25,7 +26,7 @@ public class AdminController {
     static FileService fileRepository = new FileServiceImpl();
     static UserRepository users = new UserRepositoryImpl();
 
-    @GetMapping("/admin/order")
+    @GetMapping("/order")
     public String getOrderPage(Model model) {
 
         model.addAttribute("files", fileRepository.getAll());
@@ -33,7 +34,7 @@ public class AdminController {
         return "admin/order";
     }
 
-    @GetMapping("/admin/select")
+    @GetMapping("/select")
     public String getOrderFilter(@RequestParam(value = "file_id", required = false, defaultValue = "0") Integer file_id,
                                  @RequestParam(value = "name", required = false) String name,
                                  @RequestParam(value = "date", required = false) String date, Model model) {
@@ -48,7 +49,7 @@ public class AdminController {
         return "admin/order";
     }
 
-    @GetMapping("/admin/sort")
+    @GetMapping("/sort")
     public String sort(@RequestParam(value = "field") String field, Model model) {
 
         model.addAttribute("files",fileRepository.sort(0,field));
@@ -57,14 +58,14 @@ public class AdminController {
         return "admin/order";
     }
 
-    @GetMapping("/admin/file/{files_id}/edit")
+    @GetMapping("/file/{files_id}/edit")
     public String editA(@PathVariable("files_id") Integer id,
                        Model model) {
         model.addAttribute("doc", fileRepository.getById(id));
         return "admin/update";
     }
 
-    @PatchMapping("/admin/file/{id}")
+    @PatchMapping("/file/{id}")
     public String updateA(@ModelAttribute("doc") @Valid File file,
                          Errors errors, @PathVariable("id") int id,
                          Model model) {
@@ -82,7 +83,7 @@ public class AdminController {
     }
 
 
-    @DeleteMapping("/admin/file/{id}")
+    @DeleteMapping("/file/{id}")
     public String deleteA(@PathVariable("id") int id, Model model) {
 
         fileRepository.delete(id);
