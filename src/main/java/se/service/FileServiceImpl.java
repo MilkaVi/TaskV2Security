@@ -12,7 +12,6 @@ public class FileServiceImpl implements FileService {
 
     public void save(File file) {
         if(file!=null) {
-            List<File> files = fileRepository.getAll();
             fileRepository.save(file);
         }
     }

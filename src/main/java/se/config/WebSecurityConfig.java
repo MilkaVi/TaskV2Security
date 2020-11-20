@@ -57,36 +57,49 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers( "/", "/registration").permitAll()
 //                .antMatchers("/admin/**").hasRole("ADMIN")
 //                .antMatchers("/user/**").hasRole("USER")
-//                .and()
-//                .formLogin()
-//                .loginPage("/login")
-//                .permitAll()
-//                .and()
-//                .logout()
-//                .logoutUrl("/doLogout")
-//                .logoutSuccessUrl("/logout_success")
-//                .permitAll();
-//
-//        http    .formLogin()
-//                .successForwardUrl("/login_success_handler");
-//
-//        http    .formLogin()
-//                .failureForwardUrl("/login_failure_handler");
-//
-//        http.logout()
-//                .logoutSuccessHandler(new LogoutSuccessHandler() {
-//
-//                    @Override
-//                    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
-//                                                Authentication authentication)
-//                            throws IOException, ServletException {
-//
-//
-//                        System.out.println("This user logged out: " + authentication.getName());
-//
-//                        response.sendRedirect("/logout_success");
-//                    }
-//                });
+
+
+
+
+
+
+
+
+
+
+        http
+                .formLogin()
+                .loginPage("/login")
+                .permitAll()
+                .and()
+                .logout()
+                .logoutUrl("/doLogout")
+                .logoutSuccessUrl("/logout_success")
+                .permitAll();
+
+        http    .formLogin()
+                .successForwardUrl("/login_success_handler");
+
+        http    .formLogin()
+                .failureForwardUrl("/login_failure_handler");
+
+
+
+
+        http.logout()
+                .logoutSuccessHandler(new LogoutSuccessHandler() {
+
+                    @Override
+                    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
+                                                Authentication authentication)
+                            throws IOException, ServletException {
+
+
+                        System.out.println("This user logged out: " + authentication.getName());
+
+                        response.sendRedirect("/logout_success");
+                    }
+                });
 //
 //
 //        http
@@ -99,9 +112,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/admin/*").hasRole("ADMIN")
-                .antMatchers("/user/*").hasRole("USER")
-                .antMatchers("/register", "/auth").permitAll()
+                //.antMatchers("/admin/*").hasRole("ADMIN")
+               // .antMatchers("/user/*").hasRole("USER")
+                .antMatchers("/registration", "files" ).permitAll()
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -1,15 +1,14 @@
 package se.controllers;
 
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
+import se.config.jwt.JwtProvider;
 import se.domain.User;
 import se.repository.UserRepository;
 import se.repository.UserRepositoryImpl;
@@ -23,32 +22,21 @@ public class Authorization {
     static FileService fileRepository = new FileServiceImpl();
     static UserRepository users = new UserRepositoryImpl();
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private JwtProvider jwtProvider = new JwtProvider();
 
-    public void setbCryptPasswordEncoder(BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
-
-    public String getCurrentUsername() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return auth.getName();
-    }
 
     @PostMapping("/login_success_handler")
-    public String loginSuccessHandler(@RequestParam(value = "username", required = false) String username,
-                                      @RequestParam(value = "password", required = false) String password,
-                                      Model model) {
+    public String loginSuccessHandler(@RequestBody @Valid User user,
+                                              Model model) {
 
-        if (users.getByLogPass(username, password).getRole().equals("ROLE_ADMIN")) {
+        User userEntity = users.getByLogPass(user.getLogin(), user.getPassword());
+        String token = jwtProvider.generateToken(userEntity.getLogin());
 
-            model.addAttribute("files", fileRepository.getAll());
-            model.addAttribute("users", users.getAll());
-            return "admin/order";
-        } else {
-            model.addAttribute("user", new User());
-            int id = users.getUserByUsername(getCurrentUsername()).getId();
-            model.addAttribute("files", fileRepository.getAllById(id));
-            return "user/order";
-        }
+        System.out.println("token + " + token);
+        model.addAttribute("token", token);
+        return "welcome";
+
+
     }
 
     @GetMapping("/login_failure_handler")
@@ -68,8 +56,11 @@ public class Authorization {
         return "logout_success";
     }
 
+
+
     @GetMapping("/login")
-    public String login() {
+    public String login(Model model) {
+        model.addAttribute("user", new User());
         return "login";
     }
 
@@ -82,23 +73,24 @@ public class Authorization {
     }
 
 
-//    @PostMapping("/registration")
-//    public String addUser(@Valid User user, BindingResult bindingResult,
-//                          Model model) {
-//        if (users.getUserByUsername(user.getLogin()) != null) {
-//            model.addAttribute("error", "username is already exist");
-//            return "registration";
-//        }
-//
-//        if (bindingResult.hasErrors()) {
-//            return "registration";
-//        }
-//
-//        users.save(user);
-//
-//        model.addAttribute("files", fileRepository.getAllById(users.getId(user)));
-//        return "user/order";
-//    }
+    @PostMapping("/registration")
+    public String addUser(@RequestBody @Valid User user, BindingResult bindingResult,
+                          Model model) {
+
+        if (users.getUserByUsername(user.getLogin()) != null) {
+            model.addAttribute("error", "username is already exist");
+            return "registration";
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "registration";
+        }
+
+        users.save(user);
+
+        model.addAttribute("files", fileRepository.getAllById(users.getId(user)));
+        return "files";
+    }
 
 
 }

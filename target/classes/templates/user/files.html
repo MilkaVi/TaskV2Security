@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>Insert title here</title>
+    <title>User</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css"
           integrity="2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
@@ -32,7 +32,7 @@
         <td>
 
 
-            <form th:method="DELETE" th:action="@{/user/file/{id}(id=${file.getId()})}">
+            <form th:method="DELETE" th:action="@{/files/{id}(id=${file.getId()})}">
                 <input style="
 
                     border-radius: 10px; background-color: #007BFF;" type="submit" value="Delete"/>
@@ -42,7 +42,7 @@
 
         <td>
 
-            <form th:action="@{/user/file/{files_id}/edit(files_id=${file.getId()})}">
+            <form th:action="@{/files/{files_id}/edit(files_id=${file.getId()})}">
                 <input style="
 
                     border-radius: 10px; background-color: #007BFF;" type="submit" value="Update"/>
@@ -56,7 +56,7 @@
 </table>
 <div style="display: flex; justify-content: left; margin-top: 10px; ">
     <a class="btn btn-lg btn-primary btn-block"
-       th:href="@{/user/add-new-order}">Add new file</a>
+       th:href="@{/files/new}">Add new file</a>
 </div>
 
 
@@ -68,7 +68,7 @@
 
             <div class="col-md-3 mb-3">
                 <label>Id</label>
-                <input type="text" class="form-control" name="file_id">
+                <input type="text" class="form-control" name="user_id">
             </div>
 
             <div class="col-md-3 mb-3">

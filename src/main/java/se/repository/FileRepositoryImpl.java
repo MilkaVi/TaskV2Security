@@ -65,7 +65,7 @@ public class FileRepositoryImpl implements FileRepository {
     @Override
     public List<File> select(Integer id, Integer user_id, String title, String date) {
         List<File> files = new ArrayList<File>();
-        if (user_id == 0 && title.trim().isEmpty() && date.trim().isEmpty()) {
+                if (user_id == 0 && title.trim().isEmpty() && date.trim().isEmpty()) {
             if (id != 0) {
                 StringBuilder sql = new StringBuilder("select * from file where file_user = ");
                 sql.append(id.toString());
@@ -110,7 +110,7 @@ public class FileRepositoryImpl implements FileRepository {
                 sql.append("order by date");
                 break;
             }
-
+        System.out.println("999" + sql);
         files.addAll(jdbcTemplate.query(sql.toString(), new FileMapping()));
         return files;
     }
